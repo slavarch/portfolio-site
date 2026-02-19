@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Андрей — CTO</title>
+  <style>
+    :root {
+      --bg: #0c0a12;
+      --bg-soft: #171222;
+      --card: #151022;
+      --text: #ece7fb;
+      --muted: #a9a0c8;
+      --accent: #8f5cff;
+      --accent-soft: #c2a9ff;
+      --border: rgba(194, 169, 255, 0.22);
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(143, 92, 255, 0.2), transparent 34%),
+        radial-gradient(circle at 88% 8%, rgba(71, 37, 160, 0.25), transparent 30%),
+        linear-gradient(175deg, #0a0810 0%, #0c0a12 52%, #0a0711 100%);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1050px, calc(100% - 2.5rem));
+      margin-inline: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(12, 10, 18, 0.76);
+      border-bottom: 1px solid rgba(194, 169, 255, 0.12);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      text-decoration: none;
+      font-size: 0.86rem;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1.2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    main {
+      padding-block: 3.2rem 4rem;
+      display: grid;
+      gap: 4rem;
+    }
+
+    section {
+      background: linear-gradient(160deg, rgba(21, 16, 34, 0.88), rgba(13, 10, 24, 0.92));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    h1,
+    h2 {
+      line-height: 1.15;
+      letter-spacing: 0.03em;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4.5vw, 3.35rem);
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      color: var(--accent-soft);
+    }
+
+    p {
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(120deg, var(--accent), #6f48f2);
+      color: #f4f0ff;
+      padding: 0.72rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 20px rgba(111, 72, 242, 0.3);
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 24px rgba(111, 72, 242, 0.45);
+    }
+
+    .about p {
+      line-height: 1.88;
+      margin-bottom: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      border: 1px solid rgba(194, 169, 255, 0.36);
+      color: #d9cdff;
+      border-radius: 999px;
+      padding: 0.38rem 0.8rem;
+      font-size: 0.85rem;
+      background: rgba(143, 92, 255, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .tag:hover {
+      transform: scale(1.04);
+      border-color: rgba(194, 169, 255, 0.75);
+      box-shadow: 0 0 20px rgba(143, 92, 255, 0.24);
+    }
+
+    .contact-copy {
+      margin-bottom: 1.2rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      width: fit-content;
+      color: #ddd2ff;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-link:hover {
+      color: #ffffff;
+    }
+
+    .contact-link svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    footer {
+      text-align: center;
+      padding-bottom: 2rem;
+      color: #8179a1;
+      font-size: 0.9rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(100%, calc(100% - 1.3rem));
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+
+      .nav-links {
+        gap: 0.9rem;
+      }
+
+      section {
+        padding: 1.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#hero" class="brand">Andrey / CTO</a>
+        <ul class="nav-links">
+          <li><a href="#hero" data-nav="hero">Главная</a></li>
+          <li><a href="#about" data-nav="about">Обо мне</a></li>
+          <li><a href="#contacts" data-nav="contacts">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero reveal" id="hero" data-section>
+      <h1>Привет, я Андрей.<br>CTO и инженер, который любит превращать хаос в ясные решения.</h1>
+      <p>Я всегда был тем человеком, к которому приходят с фразой «ничего не работает». Мне нравится разбирать сложные системы по частям, собирать сильные команды и создавать продукт, который стабильно растёт без героизма по ночам.</p>
+      <a class="cta" href="#contacts">Написать мне</a>
+    </section>
+
+    <section class="about reveal" id="about" data-section>
+      <h2>Обо мне</h2>
+      <p>В технологии я пришёл через автоматизацию маленьких задач в своём первом бизнесе: сначала писал скрипты «для себя», потом это превратилось в полноценные продукты и команды. С тех пор меня заряжает момент, когда сложная идея становится понятной и полезной для людей.</p>
+      <p>Для меня роль CTO - это баланс трёх вещей: надёжная архитектура, сильные инженеры и честные приоритеты для бизнеса. Я всё ещё люблю код, но ещё больше люблю строить среду, где люди принимают хорошие технические решения без лишней бюрократии и не выгорают на дистанции.</p>
+      <p>Вне работы я перезагружаюсь в длинных поездках на велосипеде, читаю биографии основателей и выбираюсь в горы. Лучшие идеи по продукту почему-то приходят именно там, где плохой интернет и много тишины.</p>
+      <div class="tags" aria-label="Стек, с которым работаю">
+        <span class="tag">TypeScript</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">Python</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">Redis</span>
+        <span class="tag">AWS</span>
+        <span class="tag">Kubernetes</span>
+        <span class="tag">System Design</span>
+      </div>
+    </section>
+
+    <section class="contacts reveal" id="contacts" data-section>
+      <h2>Контакты</h2>
+      <p class="contact-copy">Если хотите обсудить продукт, архитектуру или усиление инженерной команды, напишите любым удобным способом. Я открыт к предметному диалогу и новым людям.</p>
+      <div class="contact-grid">
+        <a class="contact-link" href="mailto:andrey@domain.com">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm0 2v.2L12 13l9-5.8V7l-9 5.8L3 7Z"/></svg>
+          andrey@domain.com
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/andrey" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 4a1.75 1.75 0 1 1 0 3.5A1.75 1.75 0 0 1 5.5 4ZM4 9h3v11H4V9Zm6 0h2.9v1.6h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7V20h-3v-5.4c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V20H10V9Z"/></svg>
+          LinkedIn
+        </a>
+        <a class="contact-link" href="https://t.me/andrey" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 4.2a1 1 0 0 0-1-.1L3.2 11a1 1 0 0 0 .1 1.9l4.2 1.4 1.6 5.1a1 1 0 0 0 1.8.2l2.4-3.3 4.3 3.2a1 1 0 0 0 1.6-.6l2.6-13.7a1 1 0 0 0-.4-1Z"/></svg>
+          Telegram
+        </a>
+        <a class="contact-link" href="https://github.com/andrey" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2A10 10 0 0 0 9 21.5c.5.1.7-.2.7-.5v-2c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.2-.2-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7 0-.3-.4-1.3.1-2.8 0 0 .8-.3 2.8 1a9.5 9.5 0 0 1 5 0c2-1.3 2.8-1 2.8-1 .5 1.5.2 2.5.1 2.8.7.7 1 1.6 1 2.7 0 3.8-2.3 4.7-4.5 4.9.4.3.8 1 .8 2v3c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Андрей. Build calmly, ship reliably.</footer>
+
+  <script>
+    const revealItems = document.querySelectorAll(".reveal");
+    const sectionItems = document.querySelectorAll("[data-section]");
+    const navItems = document.querySelectorAll("[data-nav]");
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      let step = 0;
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+        const delay = step * 110;
+        step += 1;
+        setTimeout(() => {
+          entry.target.classList.add("is-visible");
+        }, delay);
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.2 });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+        const id = entry.target.id;
+        navItems.forEach((link) => {
+          link.classList.toggle("active", link.dataset.nav === id);
+        });
+      });
+    }, { threshold: 0.45, rootMargin: "-15% 0px -45% 0px" });
+
+    sectionItems.forEach((section) => navObserver.observe(section));
+  </script>
+</body>
+</html>
