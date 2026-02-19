@@ -90,10 +90,15 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const text = data?.content?.[0]?.text;
+
+    const text = data?.content?.[0]?.text
+      || data?.choices?.[0]?.message?.content
+      || data?.reply
+      || data?.output?.text;
 
     if (!text) {
-      return res.status(500).json({ error: 'Empty response from AI' });
+      console.log('MiniMax raw response:', JSON.stringify(data));
+      return res.status(500).json({ error: 'Empty response', debug: data });
     }
 
     res.json({ response: text });
