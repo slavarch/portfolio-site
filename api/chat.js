@@ -63,7 +63,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.MINIMAX_API_KEY;
+  const apiKey = process.env.OPENAI_KEY;
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/65e981dd-177f-4bc7-8b18-0e18ac172aa8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'api/chat.js:66',message:'H4: env var check',data:{hasKey:!!apiKey,keyPrefix:apiKey?apiKey.substring(0,7):'MISSING'},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
+  // #endregion
   if (!apiKey) {
     return res.status(500).json({ error: 'API key not configured' });
   }
@@ -74,35 +77,44 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('https://api.minimax.io/anthropic/v1/messages', {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/65e981dd-177f-4bc7-8b18-0e18ac172aa8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'api/chat.js:80',message:'H3: calling OpenAI',data:{messageLength:message.length,systemLength:SYSTEM_PROMPT.length},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
+    // #endregion
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'MiniMax-M2.5',
-        messages: [{ role: 'user', content: message }],
-        max_tokens: 1500,
-        temperature: 0.6,
-        system: SYSTEM_PROMPT
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: message }
+        ],
+        max_tokens: 1000,
+        temperature: 0.6
       })
     });
 
     const data = await response.json();
 
-    const text = data?.content?.[0]?.text
-      || data?.choices?.[0]?.message?.content
-      || data?.reply
-      || data?.output?.text;
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/65e981dd-177f-4bc7-8b18-0e18ac172aa8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'api/chat.js:101',message:'H1+H2: OpenAI response',data:{status:response.status,hasChoices:!!data?.choices,errorType:data?.error?.type,errorMsg:data?.error?.message,firstChoiceExists:!!data?.choices?.[0]},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
+    // #endregion
+
+    const text = data?.choices?.[0]?.message?.content;
 
     if (!text) {
-      console.log('MiniMax raw response:', JSON.stringify(data));
       return res.status(500).json({ error: 'Empty response', debug: data });
     }
 
     res.json({ response: text });
   } catch (err) {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/65e981dd-177f-4bc7-8b18-0e18ac172aa8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'api/chat.js:114',message:'H3: network error',data:{error:err.message},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
+    // #endregion
     res.status(500).json({ error: err.message });
   }
 }
